@@ -1,0 +1,56 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "run-shorcut-for-current-application",
+  "title": "Run Shortcut For Current Application",
+  "description": "Runs an application shortcut depending on the frontmost application.",
+  "icon": "command-icon.png",
+  "author": "cyxn",
+  "categories": [
+    "Productivity",
+    "Developer Tools",
+    "System"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "manage-custom-commands",
+      "title": "List Custom Shortcuts",
+      "subtitle": "Get List of Custom Shorcuts",
+      "description": "Manage all existing commands",
+      "mode": "view"
+    },
+    {
+      "name": "run-custom-shortcut-for-current-application",
+      "title": "Run Custom Shortcut for Current Application",
+      "description": "Run command that accepts id of the command which will behave differently based on what application is opened now",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "id",
+          "placeholder": "1",
+          "type": "text",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.72.1",
+    "@raycast/utils": "^1.15.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^1.0.6",
+    "@types/node": "20.8.10",
+    "@types/react": "18.2.27",
+    "eslint": "^8.51.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
