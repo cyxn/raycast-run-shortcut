@@ -10,8 +10,11 @@ type RunShortcutParams = {
 
 export const runShortcut = async ({ key, appName, modifiers }: RunShortcutParams): Promise<null> => {
   const appleScriptKeyCode = keyToAppleScriptCode[key];
-  const modifierString = modifiers.map((modifier) => `${modifier} down`).join(", ");
-
+  const modifierString = modifiers
+    .filter(Boolean)
+    .map((modifier) => `${modifier} down`)
+    .join(", ");
+  console.log({ appleScriptKeyCode, modifierString });
   await runAppleScript(`
         tell application "${appName}" to activate
         tell application "System Events"

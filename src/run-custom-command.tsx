@@ -10,7 +10,11 @@ export default async function main({ arguments: { id } }: { arguments: { id: str
 
   // todo: look in cache or in local storage by id;
   console.log({ id });
-  const applicationShortcutRecord = idToCommandMap[id];
+  const applicationCommandRecord = idToCommandMap[id];
+  if (!applicationCommandRecord) {
+    await showHUD(`Command with id "${id}" wasn't found`);
+    return;
+  }
   // end todo
 
   let shortcutToRun: ShortcutToRun | null = null;
@@ -20,7 +24,7 @@ export default async function main({ arguments: { id } }: { arguments: { id: str
     const activeTabUrl = await getActiveTabUrl(frontmostApplicationName);
 
     if (activeTabUrl) {
-      const foundShorcut = applicationShortcutRecord.shortcuts.find((shorcutObject) => {
+      const foundShorcut = applicationCommandRecord.shortcuts.find((shorcutObject) => {
         if (shorcutObject.type === "app") {
           return false;
         }
@@ -35,7 +39,7 @@ export default async function main({ arguments: { id } }: { arguments: { id: str
   }
 
   if (!shortcutToRun) {
-    const foundShortcut = applicationShortcutRecord.shortcuts.find((shorcutObject) => {
+    const foundShortcut = applicationCommandRecord.shortcuts.find((shorcutObject) => {
       if (shorcutObject.type === "web") {
         return false;
       }
@@ -48,12 +52,12 @@ export default async function main({ arguments: { id } }: { arguments: { id: str
 
   if (!shortcutToRun) {
     return await showHUD(
-      `No shortcut was found for application "${frontmostApplicationName}" for command "${applicationShortcutRecord.name}"`,
+      `No shortcut was found for application "${frontmostApplicationName}" for command "${applicationCommandRecord.name}"`,
     );
   }
   await closeMainWindow();
   await runShortcut({ ...shortcutToRun, appName: frontmostApplicationName });
   // todo remove hud in case of success.
-  const resultText = `${applicationShortcutRecord.name} in ${metaActiveTabUrl || frontmostApplicationName}`;
+  const resultText = `${applicationCommandRecord.name} in ${metaActiveTabUrl || frontmostApplicationName}`;
   await showHUD(resultText);
 }

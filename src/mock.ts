@@ -58,8 +58,23 @@ export const applicationShortcutRaiseHandForMeet: CommandRecord = {
     },
   ],
 };
+export const toggleHandForDiagramApp: CommandRecord = {
+  id: "3",
+  name: "Toggle Hand For Diagram",
+  shortcuts: [
+    {
+      type: "web",
+      shortcutToRun: {
+        key: "h",
+        modifiers: [""],
+      },
+      websiteUrl: "https://www.tldraw.com/",
+    },
+  ],
+};
 
 export const idToCommandMap: Record<CommandRecord["id"], CommandRecord> = {
   1: applicationShortcutRecordToggleMute,
   2: applicationShortcutRaiseHandForMeet,
+  3: toggleHandForDiagramApp,
 };
