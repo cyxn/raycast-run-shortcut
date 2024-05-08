@@ -1,7 +1,7 @@
-import { ApplicationShortcutRecord } from "./types";
+import { CommandRecord } from "./types";
 
-export const applicationShortcutRecordToggleMute: ApplicationShortcutRecord = {
-  id: 1,
+export const applicationShortcutRecordToggleMute: CommandRecord = {
+  id: "1",
   name: "Toggle Mute/Unmute",
   shortcuts: [
     {
@@ -36,8 +36,8 @@ export const applicationShortcutRecordToggleMute: ApplicationShortcutRecord = {
   ],
 };
 
-export const applicationShortcutRaiseHandForMeet: ApplicationShortcutRecord = {
-  id: 2,
+export const applicationShortcutRaiseHandForMeet: CommandRecord = {
+  id: "2",
   name: "Toggle Raise Hand",
   shortcuts: [
     {
@@ -59,7 +59,7 @@ export const applicationShortcutRaiseHandForMeet: ApplicationShortcutRecord = {
   ],
 };
 
-export const idToCommandMap: Record<ApplicationShortcutRecord["id"], ApplicationShortcutRecord> = {
+export const idToCommandMap: Record<CommandRecord["id"], CommandRecord> = {
   1: applicationShortcutRecordToggleMute,
   2: applicationShortcutRaiseHandForMeet,
 };

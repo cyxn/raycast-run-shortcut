@@ -1,6 +1,5 @@
 import { closeMainWindow, getFrontmostApplication, getPreferenceValues, showHUD } from "@raycast/api";
-import { supportedBrowsers } from "./constants";
-import { doesMatchUrl, getActiveTabUrl, runShortcut } from "./utils";
+import { doesMatchUrl, getActiveTabUrl, isCurrentAppBrowser, runShortcut } from "./utils";
 import { idToCommandMap } from "./mock";
 import { ShortcutToRun } from "./types";
 
@@ -17,7 +16,7 @@ export default async function main({ arguments: { id } }) {
   let shortcutToRun: ShortcutToRun | null = null;
   let metaActiveTabUrl: string | null = null;
 
-  if (supportedBrowsers.includes(frontmostApplicationName) || browser?.name === frontmostApplicationName) {
+  if (isCurrentAppBrowser({ frontmostApplicationName, preferenceBrowserName: browser?.name || "" })) {
     const activeTabUrl = await getActiveTabUrl(frontmostApplicationName);
 
     if (activeTabUrl) {

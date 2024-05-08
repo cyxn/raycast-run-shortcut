@@ -1,7 +1,7 @@
 import { keyToAppleScriptCode } from "./constants";
 
 export type Key = keyof typeof keyToAppleScriptCode;
-export type Modifier = "command" | "control" | "shift" | "option";
+export type Modifier = "command" | "control" | "shift" | "option" | "";
 
 export interface ShortcutToRun {
   key: Key;
@@ -20,8 +20,8 @@ export interface WebShortcut {
   shortcutToRun: ShortcutToRun;
 }
 
-export interface ApplicationShortcutRecord {
-  id: number;
+export interface CommandRecord {
+  id: string;
   name: string;
   shortcuts: (ApplicationShortcut | WebShortcut)[];
 }

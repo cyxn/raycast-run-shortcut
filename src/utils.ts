@@ -1,6 +1,6 @@
 import { runAppleScript } from "@raycast/utils";
-import { keyToAppleScriptCode } from "./constants";
-import { ShortcutToRun } from "./types";
+import { keyToAppleScriptCode, supportedBrowsers } from "./constants";
+import { ApplicationShortcut, ShortcutToRun, WebShortcut } from "./types";
 
 type RunShortcutParams = {
   appName: string;
@@ -53,4 +53,33 @@ export async function getActiveTabUrl(browser: string): Promise<URL | null> {
 
 export function doesMatchUrl(testUrl: URL, websiteUrl: string): boolean {
   return testUrl.href.includes(websiteUrl);
+}
+
+export function isCurrentAppBrowser({
+  frontmostApplicationName,
+  preferenceBrowserName,
+}: {
+  frontmostApplicationName: string;
+  preferenceBrowserName: string;
+}) {
+  return supportedBrowsers.includes(frontmostApplicationName) || preferenceBrowserName === frontmostApplicationName;
+}
+
+export function compareIsAppMatches({
+  shortcut,
+  activeTabUrl,
+  frontmostApplicationName,
+}: {
+  shortcut: ApplicationShortcut | WebShortcut;
+  activeTabUrl: URL | null;
+  frontmostApplicationName: string;
+}): boolean {
+  if (shortcut.type === "web" && activeTabUrl) {
+    const doesMatchPattern = doesMatchUrl(activeTabUrl, shortcut.websiteUrl);
+    return doesMatchPattern;
+  }
+  if (shortcut.type === "app") {
+    return frontmostApplicationName === shortcut.applicationName;
+  }
+  return false;
 }
