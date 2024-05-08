@@ -67,6 +67,7 @@ export const modifierSymbolMap: Record<Modifier, string> = {
   control: "⌃",
   option: "⌥",
   shift: "⇧",
+  "": "",
 };
 
 export const supportedBrowsers = ["Arc", "Brave", "Edge", "Google Chrome", "Opera", "Safari", "Vivaldi"];

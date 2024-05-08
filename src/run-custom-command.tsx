@@ -3,7 +3,7 @@ import { doesMatchUrl, getActiveTabUrl, isCurrentAppBrowser, runShortcut } from 
 import { idToCommandMap } from "./mock";
 import { ShortcutToRun } from "./types";
 
-export default async function main({ arguments: { id } }) {
+export default async function main({ arguments: { id } }: { arguments: { id: string } }) {
   const frontmostApplication = await getFrontmostApplication();
   const { name: frontmostApplicationName } = frontmostApplication;
   const { browser } = getPreferenceValues();
@@ -29,7 +29,7 @@ export default async function main({ arguments: { id } }) {
       });
       if (foundShorcut) {
         shortcutToRun = foundShorcut.shortcutToRun;
-        metaActiveTabUrl = activeTabUrl;
+        metaActiveTabUrl = activeTabUrl.href;
       }
     }
   }
