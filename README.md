@@ -29,4 +29,5 @@ execute corresponding shortcut.
 - run-custom-command: read record from storage
 - manage-custom-commands: show concrete item, create new command, edit existing command
 - prep for store
-
+  - check for actions titles
+  - codereview
