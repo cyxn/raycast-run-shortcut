@@ -25,3 +25,21 @@ export interface CommandRecord {
   name: string;
   shortcuts: (ApplicationShortcut | WebShortcut)[];
 }
+
+export enum FormFields {
+  commandName = "commandName",
+  apps = "apps",
+  urls = "urls",
+}
+
+interface IFormValuesAppOrUrlShortcuts {
+  [key: string]: (Key | Modifier)[];
+}
+
+interface IFormValuesOther {
+  [FormFields.commandName]: string;
+  [FormFields.apps]: string[];
+  [FormFields.urls]: string;
+}
+
+export type IFormValues = IFormValuesOther & IFormValuesAppOrUrlShortcuts;
