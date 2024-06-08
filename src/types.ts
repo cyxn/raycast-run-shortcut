@@ -24,6 +24,7 @@ export interface CommandRecord {
   id: string;
   name: string;
   shortcuts: (ApplicationShortcut | WebShortcut)[];
+  isPredefined: boolean;
 }
 
 export enum FormFields {

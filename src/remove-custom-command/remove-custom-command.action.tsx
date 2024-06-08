@@ -8,6 +8,7 @@ export const RemoveCustomCommandAction = ({ id }: IProps) => {
   return (
     <Action
       title="Remove Command"
+      shortcut={{ modifiers: ["ctrl"], key: "x" }}
       onAction={async () => {
         const isAlertConfirmed = await confirmAlert({
           title: "Delete the command?",

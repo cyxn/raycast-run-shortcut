@@ -10,16 +10,17 @@ export default async function main({ arguments: { id } }: { arguments: { id: str
 
   console.log({ id });
 
-  const allCommandsRaw = await LocalStorage.allItems();
-
-  const allCommands = Object.keys(allCommandsRaw).reduce<CommandRecord[]>((commands, id) => {
-    commands.push(JSON.parse(allCommandsRaw[id]));
-    return commands;
-  }, []);
-
   const applicationCommandRecordMocked = idToCommandMap[id];
-  const applicationCommandRecordFromDb = allCommands.find((command) => command.id === id);
-  const applicationCommandRecord = applicationCommandRecordFromDb || applicationCommandRecordMocked;
+
+  let applicationCommandRecord: CommandRecord = applicationCommandRecordMocked;
+
+  if (!applicationCommandRecord) {
+    const commandRaw = await LocalStorage.getItem<string>(id);
+
+    if (commandRaw) {
+      applicationCommandRecord = JSON.parse(commandRaw);
+    }
+  }
 
   if (!applicationCommandRecord) {
     await showHUD(`Command with id "${id}" wasn't found`);

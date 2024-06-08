@@ -6,5 +6,12 @@ interface IProps {
 }
 
 export const EditCustomCommandAction = ({ id }: IProps) => {
-  return <Action.Push title="Edit Command" target={<CustomCommandView isEdit id={id} />} icon={Icon.Pencil} />;
+  return (
+    <Action.Push
+      title="Edit Command"
+      shortcut={{ modifiers: ["cmd"], key: "e" }}
+      target={<CustomCommandView isEdit id={id} />}
+      icon={Icon.Pencil}
+    />
+  );
 };

@@ -2,6 +2,7 @@ import {
   Action,
   ActionPanel,
   Application,
+  confirmAlert,
   Form,
   getApplications,
   LocalStorage,
@@ -12,7 +13,8 @@ import { randomUUID } from "crypto";
 import { useEffect, useState } from "react";
 import { ShortcutPicker } from "../shortcut-picker";
 import { CommandRecord, FormFields, IFormValues } from "../../types";
-import { getAppShortcuts, getUrlShortcuts, validateFormValues } from "../../utils";
+import { getAppShortcuts, getUrlShortcuts, isPredefinedCommand, validateFormValues } from "../../utils";
+import { idToCommandMap } from "../../mock";
 
 interface IProps {
   isEdit?: boolean;
@@ -35,9 +37,17 @@ export const CustomCommandView = ({ isEdit, id }: IProps) => {
     });
 
     if (isEdit && id) {
+      const isPredefined = isPredefinedCommand(id);
+      if (isPredefined) {
+        confirmAlert({
+          title: "Warning",
+          message: "This is not editable and any changes will be reverted to defaults",
+        });
+      }
+
       LocalStorage.getItem(id).then((commandRaw) => {
-        if (commandRaw) {
-          const command: CommandRecord = JSON.parse(commandRaw as string);
+        if (commandRaw || isPredefined) {
+          const command: CommandRecord = isPredefined ? idToCommandMap[id] : JSON.parse(commandRaw as string);
 
           const apps: typeof pickedApps = [];
           const urls: (typeof pickedUrls)[] = [];
@@ -118,11 +128,17 @@ export const CustomCommandView = ({ isEdit, id }: IProps) => {
 
     const urlShortcuts = getUrlShortcuts(values);
 
+    if (id && isPredefinedCommand(id)) {
+      popToRoot();
+      return;
+    }
+
     if (isEdit && id) {
       const command: CommandRecord = {
         id,
         name: values.commandName,
         shortcuts: [...appShortcuts, ...urlShortcuts],
+        isPredefined: false,
       };
 
       await LocalStorage.setItem(id, JSON.stringify(command));
@@ -132,6 +148,7 @@ export const CustomCommandView = ({ isEdit, id }: IProps) => {
         id: randomUUID(),
         name: values.commandName,
         shortcuts: [...appShortcuts, ...urlShortcuts],
+        isPredefined: false,
       };
 
       await LocalStorage.setItem(command.id, JSON.stringify(command));
@@ -159,8 +176,8 @@ export const CustomCommandView = ({ isEdit, id }: IProps) => {
       />
       <Form.TagPicker
         id={FormFields.apps}
-        title="Apps"
-        placeholder="Choose apps"
+        title="Applications"
+        placeholder="Choose applications"
         onChange={onPickedAppsChangeHandler}
         value={pickedApps}
         error={errors[FormFields.apps]}
@@ -181,7 +198,7 @@ export const CustomCommandView = ({ isEdit, id }: IProps) => {
       ))}
       <Form.TextField
         id={FormFields.urls}
-        title="Urls"
+        title="URLs of web applications"
         placeholder="Write space separated urls"
         onChange={onPickedUrlsChangeHandler}
         value={pickedUrls}

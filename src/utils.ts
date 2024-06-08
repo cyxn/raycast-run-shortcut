@@ -1,5 +1,6 @@
 import { runAppleScript } from "@raycast/utils";
 import { keyToAppleScriptCode, modifiers, supportedBrowsers } from "./constants";
+import { idToCommandMap } from "./mock";
 import { ApplicationShortcut, IFormValues, Key, Modifier, ShortcutToRun, WebShortcut } from "./types";
 
 type RunShortcutParams = {
@@ -91,9 +92,7 @@ const isModifier = (val: any): val is Modifier => modifiers.includes(val);
 
 const isKey = (val: any): val is Key => Object.keys(keyToAppleScriptCode).includes(val);
 
-const isValidShortcut = (shortcut: string[]): boolean => {
-  return shortcut.some(isModifier) && shortcut.some(isKey);
-};
+const isValidShortcut = (shortcut: string[]): boolean => shortcut.some(isKey);
 
 export const validateFormValues = ({ commandName, apps, urls, ...shortcuts }: IFormValues): Record<string, string> => {
   const errors: Record<string, string> = {};
@@ -111,7 +110,7 @@ export const validateFormValues = ({ commandName, apps, urls, ...shortcuts }: IF
     if (shortcuts[appOrUrl].length === 0) {
       errors[appOrUrl] = "provide shortcut";
     } else if (!isValidShortcut(shortcuts[appOrUrl])) {
-      errors[appOrUrl] = "should contain at least one modifier and key";
+      errors[appOrUrl] = "should contain at least one key";
     }
   });
 
@@ -167,3 +166,5 @@ export const getUrlShortcuts = (values: IFormValues) => {
 
   return urlShortcuts;
 };
+
+export const isPredefinedCommand = (id: string) => !!idToCommandMap[id];
