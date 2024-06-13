@@ -88,9 +88,13 @@ export function compareIsAppMatches({
   return false;
 }
 
-const isModifier = (val: any): val is Modifier => modifiers.includes(val);
+const isModifier = (val: unknown): val is Modifier => {
+  return typeof val === "string" && modifiers.includes(val as Modifier);
+};
 
-const isKey = (val: any): val is Key => Object.keys(keyToAppleScriptCode).includes(val);
+const isKey = (val: unknown): val is Key => {
+  return typeof val === "string" && Object.keys(keyToAppleScriptCode).includes(val);
+};
 
 const isValidShortcut = (shortcut: string[]): boolean => shortcut.some(isKey);
 
@@ -130,7 +134,8 @@ const parseShortcuts = (shortcut: string[]) => {
 
       return acc;
     },
-    { shortcutModifiers: [] } as any,
+    // there is a bug related to this. You can add several keys (non-modifiers) but only 1 will be displayed
+    { shortcutModifiers: [] as Modifier[] },
   );
 
   return parsedShortcuts;

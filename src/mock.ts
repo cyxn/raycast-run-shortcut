@@ -24,14 +24,14 @@ export const applicationShortcutRecordToggleMute: CommandRecord = {
       type: "app",
       applicationName: "zoom.us",
       // this one is default
-      //            shortcutToRun: {
-      //                key: "a",
-      //                modifiers: ["command", "shift"]
-      //            }
       shortcutToRun: {
-        key: "d",
-        modifiers: ["command"],
+        key: "a",
+        modifiers: ["command", "shift"],
       },
+      // shortcutToRun: {
+      //   key: "d",
+      //   modifiers: ["command"],
+      // },
     },
   ],
   isPredefined: true,
