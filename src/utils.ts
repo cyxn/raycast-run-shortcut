@@ -96,7 +96,7 @@ const isKey = (val: unknown): val is Key => {
   return typeof val === "string" && Object.keys(keyToAppleScriptCode).includes(val);
 };
 
-const isValidShortcut = (shortcut: string[]): boolean => shortcut.some(isKey);
+const isValidShortcut = (shortcut: string[]): boolean => shortcut.filter(isKey).length === 1;
 
 export const validateFormValues = ({ commandName, apps, urls, ...shortcuts }: IFormValues): Record<string, string> => {
   const errors: Record<string, string> = {};
@@ -114,7 +114,7 @@ export const validateFormValues = ({ commandName, apps, urls, ...shortcuts }: IF
     if (shortcuts[appOrUrl].length === 0) {
       errors[appOrUrl] = "provide shortcut";
     } else if (!isValidShortcut(shortcuts[appOrUrl])) {
-      errors[appOrUrl] = "should contain at least one key";
+      errors[appOrUrl] = "exactly one key required";
     }
   });
 
