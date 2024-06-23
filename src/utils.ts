@@ -122,7 +122,7 @@ export const validateFormValues = ({ commandName, apps, urls, ...shortcuts }: IF
 };
 
 const parseShortcuts = (shortcut: string[]) => {
-  const parsedShortcuts = shortcut.reduce<{ shortcutModifiers: Modifier[]; shortcutKey: Key }>(
+  const parsedShortcuts = shortcut.reduce<{ shortcutModifiers: Modifier[]; shortcutKey: Key | null }>(
     (acc, curr) => {
       if (isModifier(curr)) {
         acc.shortcutModifiers.push(curr);
@@ -134,8 +134,7 @@ const parseShortcuts = (shortcut: string[]) => {
 
       return acc;
     },
-    // there is a bug related to this. You can add several keys (non-modifiers) but only 1 will be displayed
-    { shortcutModifiers: [] as Modifier[] },
+    { shortcutModifiers: [] as Modifier[], shortcutKey: null },
   );
 
   return parsedShortcuts;
@@ -148,7 +147,7 @@ export const getAppShortcuts = (values: IFormValues) => {
     return {
       type: "app",
       applicationName: app,
-      shortcutToRun: { modifiers: shortcutModifiers, key: shortcutKey },
+      shortcutToRun: { modifiers: shortcutModifiers, key: shortcutKey! },
     };
   });
 
@@ -165,7 +164,7 @@ export const getUrlShortcuts = (values: IFormValues) => {
       return {
         type: "web",
         websiteUrl: url,
-        shortcutToRun: { modifiers: shortcutModifiers, key: shortcutKey },
+        shortcutToRun: { modifiers: shortcutModifiers, key: shortcutKey! },
       };
     });
 
