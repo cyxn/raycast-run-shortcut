@@ -24,16 +24,17 @@ export const applicationShortcutRecordToggleMute: CommandRecord = {
       type: "app",
       applicationName: "zoom.us",
       // this one is default
-      //            shortcutToRun: {
-      //                key: "a",
-      //                modifiers: ["command", "shift"]
-      //            }
       shortcutToRun: {
-        key: "d",
-        modifiers: ["command"],
+        key: "a",
+        modifiers: ["command", "shift"],
       },
+      // shortcutToRun: {
+      //   key: "d",
+      //   modifiers: ["command"],
+      // },
     },
   ],
+  isPredefined: true,
 };
 
 export const applicationShortcutRaiseHandForMeet: CommandRecord = {
@@ -57,6 +58,7 @@ export const applicationShortcutRaiseHandForMeet: CommandRecord = {
       },
     },
   ],
+  isPredefined: true,
 };
 export const toggleHandForDiagramApp: CommandRecord = {
   id: "3",
@@ -71,6 +73,7 @@ export const toggleHandForDiagramApp: CommandRecord = {
       websiteUrl: "https://www.tldraw.com/",
     },
   ],
+  isPredefined: true,
 };
 
 export const idToCommandMap: Record<CommandRecord["id"], CommandRecord> = {

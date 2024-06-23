@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Action, ActionPanel, List, getFrontmostApplication, getPreferenceValues } from "@raycast/api";
+import { Action, ActionPanel, List, getFrontmostApplication, getPreferenceValues, LocalStorage } from "@raycast/api";
 import { applicationShortcutRaiseHandForMeet, applicationShortcutRecordToggleMute } from "./mock";
 import { CommandRecord } from "./types";
 import { compareIsAppMatches, getActiveTabUrl, isCurrentAppBrowser } from "./utils";
+import { CreateCustomCommandAction } from "./create-custom-command/create-custom-command.action";
+import { RemoveCustomCommandAction } from "./remove-custom-command/remove-custom-command.action";
+import { EditCustomCommandAction } from "./edit-cusom-command/edit-custom-command.action";
 
 const DEEP_LINK = "raycast://extensions/cyxn/universal-commands/run-custom-command";
 
@@ -36,6 +39,13 @@ export default function Command() {
 
   React.useEffect(() => {
     (async () => {
+      const allCommandsRaw = await LocalStorage.allItems();
+
+      const allCommands = Object.keys(allCommandsRaw).reduce<CommandRecord[]>((commands, id) => {
+        commands.push(JSON.parse(allCommandsRaw[id]));
+        return commands;
+      }, []);
+
       const frontmostApplication = await getFrontmostApplication();
 
       const { name: frontmostApplicationName } = frontmostApplication;
@@ -43,12 +53,12 @@ export default function Command() {
         frontmostApplicationName,
         preferenceBrowserName: browser?.name || "",
       });
-      let activeTabUrl = null;
+      let activeTabUrl: State["activeTabUrl"] = null;
       if (isInBrowserNow) {
         activeTabUrl = await getActiveTabUrl(frontmostApplicationName);
       }
 
-      const storedData = [applicationShortcutRaiseHandForMeet, applicationShortcutRecordToggleMute];
+      const storedData = [applicationShortcutRaiseHandForMeet, applicationShortcutRecordToggleMute, ...allCommands];
 
       setCommands(storedData);
       setState((previous) => ({ ...previous, isLoading: false, frontmostApplicationName, activeTabUrl }));
@@ -120,6 +130,10 @@ export default function Command() {
             actions={
               <ActionPanel>
                 <ActionPanel.Section>
+                  <Action.OpenInBrowser
+                    title="Run"
+                    url={`raycast://extensions/cyxn/universal-commands/run-custom-command?arguments=${encodeURIComponent(JSON.stringify({ id }))}`}
+                  />
                   <Action.CreateQuicklink
                     quicklink={{
                       link: composeFullUrl(id),
@@ -127,11 +141,9 @@ export default function Command() {
                   />
                 </ActionPanel.Section>
                 <ActionPanel.Section>
-                  <Action.CreateQuicklink
-                    quicklink={{
-                      link: composeFullUrl(id),
-                    }}
-                  />
+                  <CreateCustomCommandAction />
+                  <EditCustomCommandAction id={id} />
+                  <RemoveCustomCommandAction id={id} />
                 </ActionPanel.Section>
               </ActionPanel>
             }
