@@ -16,7 +16,7 @@
       "name": "manage-custom-commands",
       "title": "List Custom Commands",
       "subtitle": "Get List of Custom Commands",
-      "description": "Get list of all existing commands, view its details, edit or delete them",
+      "description": "Get list of all existing commands, create new commandss, view its details, edit or delete them",
       "mode": "view"
     },
     {
@@ -38,7 +38,7 @@
     {
       "name": "browser",
       "title": "Custom Chromium Browser",
-      "description": "Add your custom browser based on chromium which no support by default",
+      "description": "Add your custom browser based on chromium which is not supported by default",
       "type": "appPicker",
       "required": false
     }

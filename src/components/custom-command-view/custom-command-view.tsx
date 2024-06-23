@@ -199,7 +199,8 @@ export const CustomCommandView = ({ isEdit, id }: IProps) => {
       <Form.TextField
         id={FormFields.urls}
         title="URLs of web applications"
-        placeholder="Write space separated urls"
+        placeholder="https://meet.google.com https://example.com"
+        info="URLs with protocol, space separated"
         onChange={onPickedUrlsChangeHandler}
         value={pickedUrls}
         error={errors[FormFields.urls]}

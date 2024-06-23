@@ -23,11 +23,3 @@ execute corresponding shortcut.
 - You will have default pre-configured command "Toggle Mute/Unmute" that you can start using right away or you can build
   your own command
 - Save the command as Raycast Quicklink and configure it separately
-
-## TODOs
-
-- run-custom-command: read record from storage
-- manage-custom-commands: show concrete item, create new command, edit existing command
-- prep for store
-  - check for actions titles
-  - codereview
